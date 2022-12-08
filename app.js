@@ -45,7 +45,7 @@ app.post("/register/", async (request, response) => {
         VALUES(
             '${username}',
             '${name}',
-            '${password}',
+            '${hashedPassword}',
             '${gender}',
             '${location}'
         );
@@ -94,18 +94,26 @@ app.put("/change-password", async (request, response) => {
     `;
   let dbUser = await db.get(getUserDetails);
   console.log(dbUser);
-  if (oldPassword !== dbUser.password) {
+  if (newPassword.length < 5) {
     response.status(400);
-    response.send("Invalid current password");
+    response.send("Password is too short");
   } else {
-    if (newPassword.length < 5) {
-      response.status(400);
-      response.send("Password is too short");
-    } else {
-      const hashedPassword = await bcrypt.hash(newPassword, 15);
-      dbUser.password = newPassword;
+    const isPasswordMatched = await bcrypt.compare(
+      oldPassword,
+      dbUser.password
+    );
+    if (isPasswordMatched === true) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const updateNewPsasword = `
+          UPDATE user 
+          SET password = '${hashedPassword}';
+          `;
+      await db.run(updateNewPsasword);
       response.status(200);
       response.send("Password updated");
+    } else {
+      response.status = 400;
+      response.send("Invalid current password");
     }
   }
 });

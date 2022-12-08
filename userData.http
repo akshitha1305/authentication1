@@ -14,8 +14,8 @@ POST http://localhost:3000/login/
 Content-Type: application/json 
 
 {
-  "username": "adam_richard",
-  "password": "richard@123"
+  "username": "richard",
+  "password": "richard_123"
 }
 
 ###
@@ -24,16 +24,8 @@ Content-Type: application/json
 
 {
   "username": "adam_richard",
-  "oldPassword": "richard_567",
-  "newPassword": "richard@123"
+  "oldPassword": "richard123",
+  "newPassword": "richard1783"
 }
 ###
 
-PUT http://localhost:3000/change-password/
-Content-Type: application/json 
-
-{
-  "username": "adam_richard",
-  "oldPassword": "richard_567",
-  "newPassword": "rich"
-}
