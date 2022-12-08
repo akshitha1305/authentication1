@@ -68,8 +68,7 @@ app.post("/login/", async (request, response) => {
     FROM user WHERE username = '${username}';
     `;
   const dbUser = await db.get(getUserDetails);
-  console.log(dbUser.password);
-  console.log(password);
+
   if (dbUser === undefined) {
     response.status(400);
     response.send("Invalid user");
@@ -112,7 +111,7 @@ app.put("/change-password", async (request, response) => {
       response.status(200);
       response.send("Password updated");
     } else {
-      response.status = 400;
+      response.status(400);
       response.send("Invalid current password");
     }
   }
